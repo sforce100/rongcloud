@@ -4,9 +4,24 @@ module Rongcloud
     API_URI = {
         USER_GET_TOKEN: '/user/getToken.json',
         USER_REFRESH: '/user/refresh.json',
+        USER_BLOCK: '/user/block.json',
+        USER_UNBLOCK: '/user/unblock.json',
+        USER_BLOCK_QUERY: '/user/block/query.json',
         MSG_PRV_PUBLISH: '/message/private/publish.json',
         MSG_SYSTEM_PUBLISH: '/message/system/publish.json',
-        MSG_HISTORY: '/message/history.json'
+        MSG_HISTORY: '/message/history.json',
+        GROUP_SYNC: '/group/sync.json',
+        GROUP_CREATE: '/group/create.json',
+        GROUP_JOIN: '/group/join.json',
+        GROUP_QUIT: '/group/quit.json',
+        GROUP_DISMISS: '/group/dismiss.json',
+        GROUP_USER_QUERY: '/group/user/query.json',
+        GROUP_USER_GAG_ADD: '/group/user/gag/add.json',
+        GROUP_USER_GAG_ROLLBACK: '/group/user/gag/rollback.json',
+        GROUP_USER_GAG_list: '/group/user/gag/list.json',
+        WORDFILTER_ADD: '/wordfilter/add.json',
+        WORDFILTER_DELETE: '/wordfilter/delete.json',
+        WORDFILTER_LIST: '/wordfilter/list.json'
     }
 
     def self.req_get(config)

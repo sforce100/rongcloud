@@ -24,6 +24,30 @@ module Rongcloud
         res = Rongcloud::Service.req_post(post)
         res[:code]==200
       end
+
+      def block(minute)
+        post = {uri: Rongcloud::Service::API_URI[:USER_BLOCK],
+                params: optional_params({userId: self.user_id, minute: minute})
+        }
+        res = Rongcloud::Service.req_post(post)
+        res[:code]==200
+      end
+
+      def unblock
+        post = {uri: Rongcloud::Service::API_URI[:USER_UNBLOCK],
+                params: optional_params({userId: self.user_id})
+        }
+        res = Rongcloud::Service.req_post(post)
+        res[:code]==200
+      end
+
+      def block_query
+        post = {uri: Rongcloud::Service::API_URI[:USER_BLOCK_QUERY],
+                params: optional_params({})
+        }
+        Rongcloud::Service.req_post(post)
+      end
+
     end
   end
 end

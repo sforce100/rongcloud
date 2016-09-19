@@ -12,7 +12,7 @@ require 'rongcloud/service/message'
 
 module Rongcloud
   class << self
-    API_HOST = 'https://api.cn.rong.io'
+    API_HOST = 'https://api.cn.ronghub.com'
     attr_accessor :app_key
     attr_accessor :app_secret
     attr_accessor :api_host
