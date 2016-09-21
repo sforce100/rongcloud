@@ -7,8 +7,7 @@ require 'core_extend'
 require 'rongcloud/version'
 require 'rongcloud/sign'
 require 'rongcloud/service'
-require 'rongcloud/service/user'
-require 'rongcloud/service/message'
+Dir[File.dirname(__FILE__) + '/rongcloud/service/*.rb'].each {|file| require file }
 
 module Rongcloud
   class << self

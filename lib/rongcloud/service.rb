@@ -18,7 +18,7 @@ module Rongcloud
         GROUP_USER_QUERY: '/group/user/query.json',
         GROUP_USER_GAG_ADD: '/group/user/gag/add.json',
         GROUP_USER_GAG_ROLLBACK: '/group/user/gag/rollback.json',
-        GROUP_USER_GAG_list: '/group/user/gag/list.json',
+        GROUP_USER_GAG_LIST: '/group/user/gag/list.json',
         WORDFILTER_ADD: '/wordfilter/add.json',
         WORDFILTER_DELETE: '/wordfilter/delete.json',
         WORDFILTER_LIST: '/wordfilter/list.json'
@@ -82,6 +82,12 @@ module Rongcloud
 
     # 所有数据类的父类
     class Model
+      def initialize(attributes = {})
+        if attributes.present?
+          attributes.each { |k, v| send("#{k}=", v) if respond_to?("#{k}=") }
+        end
+      end
+      
       private
       #返回可选参数（为空的参数不返回）
       def optional_params(params)
