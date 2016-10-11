@@ -36,7 +36,7 @@ module Rongcloud
       end
 
       response_body = response.body
-      warn("get response #{response_body}")
+      Rails.logger.info("get response #{response_body}")
       res_data(response_body)
     end
 
@@ -55,11 +55,11 @@ module Rongcloud
           req.headers['Content-Type'] = 'application/json'
           req.body = config[:params].to_json
         end
-        warn("post #{req.body}")
+        Rails.logger.info("post #{req.body}")
       end
 
       response_body = response.body
-      warn("post response #{response_body}")
+      Rails.logger.info("post response #{response_body}")
       res_data(response_body)
     end
 
