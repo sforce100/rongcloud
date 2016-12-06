@@ -10,6 +10,7 @@ module Rongcloud
         MSG_PRV_PUBLISH: '/message/private/publish.json',
         MSG_SYSTEM_PUBLISH: '/message/system/publish.json',
         MSG_HISTORY: '/message/history.json',
+        MSG_GROUP_PUBLISH: '/message/group/publish.json'
         GROUP_SYNC: '/group/sync.json',
         GROUP_CREATE: '/group/create.json',
         GROUP_JOIN: '/group/join.json',

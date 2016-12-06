@@ -3,31 +3,48 @@ module Rongcloud
     class Message < Rongcloud::Service::Model
       attr_accessor :from_user_id
       attr_accessor :to_user_id
-      attr_accessor :object_name #消息类型
+      attr_accessor :to_group_id
+      # attr_accessor :object_name #消息类型
       attr_accessor :push_data
       attr_accessor :push_content
+      attr_accessor :is_include_sender
+      attr_accessor :rc_msg
+
+      def initialize(attributes = {})
+        super(attributes)
+        @is_include_sender = 1 if @is_include_sender.nil?
+      end
+      
+      # 群组消息
+      def group_publish
+        post = {uri: Rongcloud::Service::API_URI[:MSG_GROUP_PUBLISH],
+                params: optional_params({fromUserId: self.from_user_id, toGroupId: self.to_group_id,
+                                         objectName: self.rc_msg.class::MESSAGE_TYPE, content: self.rc_msg.json_content,
+                                         pushData: self.push_data, isIncludeSender: self.is_include_sender}}
+        Rongcloud::Service.req_post(post)
+      end
 
       #发送单聊消息
-      def private_publish(rc_msg)
+      def private_publish
         post = {uri: Rongcloud::Service::API_URI[:MSG_PRV_PUBLISH],
                 params: optional_params({fromUserId: self.from_user_id, toUserId: self.to_user_id,
-                                         objectName: self.object_name,
+                                         objectName: self.rc_msg.class::MESSAGE_TYPE,
                                          pushData: self.push_data,
                                          pushContent: self.push_content,
-                                         content: rc_msg.json_content})
+                                         content: self.rc_msg.json_content})
         }
         res = Rongcloud::Service.req_post(post)
         res[:code]==200
       end
 
       #发送系统消息
-      def system_public(rc_msg)
+      def system_public
         post = {uri: Rongcloud::Service::API_URI[:MSG_SYSTEM_PUBLISH],
                 params: optional_params({fromUserId: self.from_user_id, toUserId: self.to_user_id,
-                                         objectName: self.object_name,
+                                         objectName: self.rc_msg.class::MESSAGE_TYPE,
                                          pushData: self.push_data,
                                          pushContent: self.push_content,
-                                         content: rc_msg.json_content})
+                                         content: self.rc_msg.json_content})
         }
         res = Rongcloud::Service.req_post(post)
         res[:code]==200
@@ -41,10 +58,19 @@ module Rongcloud
         Rongcloud::Service.req_post(post)
       end
     end
+
     # 不同类型的消息
     class RCMsg < Rongcloud::Service::Model
       attr_accessor :content
       attr_accessor :extra
+      attr_accessor :is_include_sender
+
+      def initialize(attributes = {})
+        if attributes.present?
+          attributes.each { |k, v| send("#{k}=", v) if respond_to?("#{k}=") }
+        end
+        @is_include_sender = 1 if @is_include_sender.nil?
+      end
 
       def necessary_attrs
       end
@@ -54,13 +80,27 @@ module Rongcloud
       end
     end
 
+    class RCInfoNtf < Rongcloud::Service::RCMsg
+      MESSAGE_TYPE = 'RC:InfoNtf'.freeze
+
+      attr_accessor :message
+
+      def necessary_attrs
+        {message: self.message, extra: self.extra}
+      end
+    end
+
     class RCTxtMsg< Rongcloud::Service::RCMsg
+      MESSAGE_TYPE = 'RC:TxtMsg'.freeze
+
       def necessary_attrs
         {content: self.content, extra: self.extra}
       end
     end
 
     class RCImgMsg< Rongcloud::Service::RCMsg
+      MESSAGE_TYPE = 'RC:ImgMsg'.freeze
+
       attr_accessor :image_uri
 
       def necessary_attrs
@@ -69,6 +109,8 @@ module Rongcloud
     end
 
     class RCVcMsg< Rongcloud::Service::RCMsg
+      MESSAGE_TYPE = 'RC:VcMsg'.freeze
+
       attr_accessor :duration
 
       def necessary_attrs
@@ -77,6 +119,8 @@ module Rongcloud
     end
 
     class RCImgTextMsg< Rongcloud::Service::RCMsg
+      MESSAGE_TYPE = 'RC:ImgTextMsg'.freeze
+
       attr_accessor :title
       attr_accessor :image_uri
       attr_accessor :url
@@ -98,6 +142,8 @@ module Rongcloud
     end
 
     class RCLBSMsg< Rongcloud::Service::RCMsg
+      MESSAGE_TYPE = 'RC:LBSMsg'.freeze
+
       attr_accessor :latitude
       attr_accessor :longitude
       attr_accessor :poi
@@ -108,6 +154,8 @@ module Rongcloud
     end
 
     class RCContactNtf< Rongcloud::Service::RCMsg
+      MESSAGE_TYPE = 'RC:ContactNtf'.freeze
+
       attr_accessor :operation
       attr_accessor :source_user_id
       attr_accessor :target_user_id
