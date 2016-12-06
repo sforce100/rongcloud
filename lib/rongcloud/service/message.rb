@@ -21,6 +21,7 @@ module Rongcloud
                 params: optional_params({fromUserId: self.from_user_id, toGroupId: self.to_group_id,
                                          objectName: self.rc_msg.class::MESSAGE_TYPE, content: self.rc_msg.json_content,
                                          pushData: self.push_data, isIncludeSender: self.is_include_sender})
+        }
         Rongcloud::Service.req_post(post)
       end
 
