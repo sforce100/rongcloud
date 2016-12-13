@@ -81,6 +81,26 @@ module Rongcloud
       end
     end
 
+    class RCCmdNtf < Rongcloud::Service::RCMsg
+      MESSAGE_TYPE = 'RC:CmdNtf'.freeze
+
+      attr_accessor :name, :data
+
+      def necessary_attrs
+        {name: self.name, data: self.data}
+      end
+    end
+
+    class RCCmdMsg < Rongcloud::Service::RCMsg
+      MESSAGE_TYPE = 'RC:CmdMsg'.freeze
+
+      attr_accessor :name, :data
+
+      def necessary_attrs
+        {name: self.name, data: self.data}
+      end
+    end
+
     class RCInfoNtf < Rongcloud::Service::RCMsg
       MESSAGE_TYPE = 'RC:InfoNtf'.freeze
 
