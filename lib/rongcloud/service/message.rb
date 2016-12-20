@@ -34,8 +34,7 @@ module Rongcloud
                                          pushContent: self.push_content,
                                          content: self.rc_msg.json_content})
         }
-        res = Rongcloud::Service.req_post(post)
-        res[:code]==200
+        Rongcloud::Service.req_post(post)
       end
 
       #发送系统消息
@@ -47,8 +46,7 @@ module Rongcloud
                                          pushContent: self.push_content,
                                          content: self.rc_msg.json_content})
         }
-        res = Rongcloud::Service.req_post(post)
-        res[:code]==200
+        Rongcloud::Service.req_post(post)
       end
 
       #消息历史记录
